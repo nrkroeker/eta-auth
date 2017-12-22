@@ -1,0 +1,28 @@
+extends ../../../../cre-web-shared/views/shared/layout.pug
+
+mixin form-group(name, codeName, inputType)
+    div.form-group
+        label.col-md-2.col-md-offset-1.control-label(for="input-" + codeName) #{name}
+        div.col-md-6
+            input.form-control(id="input-" + codeName, name=codeName, type=inputType, required)
+        div.col-md-3
+
+block title
+    title Register | Crossroads
+
+block body
+    div.col-xs-12.col-md-6.col-md-offset-3
+        div.text-center
+            h2 Register
+            h4 Create a new account
+            if message
+                span#error #{message}
+        hr
+        form.form-horizontal(action="/api/auth/cas/register", method="POST")
+            input(type="hidden", name="from", value=from)
+            +form-group("First Name", "firstName", "text")
+            +form-group("Last Name", "lastName", "text")
+            +form-group("Email", "email", "email")
+            div.form-group.text-center
+                div
+                    input.btn.btn-success.btn-submit(type="submit", value="Submit")

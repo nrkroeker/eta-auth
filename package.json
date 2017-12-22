@@ -1,10 +1,10 @@
 {
   "name": "cre-auth",
   "version": "0.0.1",
-  "description": "",
-  "homepage": "",
-  "repository": "",
-  "contributors": [],
+  "description": "Authentication setup for various Passport modules in Eta v2.5+.",
+  "homepage": "https://github.com/crossroads-education/eta-auth",
+  "repository": "https://github.com/crossroads-education/eta-auth",
+  "author": "Alex Hicks <alex@crossroadseducation.org> (https://alexhicks.net)",
   "engines": {
     "node": ">=8.4.0"
   }
