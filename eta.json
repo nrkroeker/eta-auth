@@ -21,7 +21,9 @@
     "subpathHandlers": []
   },
   "name": "cre-auth",
-  "dependencies": [],
+  "dependencies": [
+    "crossroads-education/eta-db-shared"
+  ],
   "indexes": [],
   "hooks": {}
 }
