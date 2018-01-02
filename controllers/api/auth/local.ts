@@ -20,7 +20,6 @@ export default class ApiAuthLocalController extends eta.IHttpController {
         }
         const hashed: string = eta.crypto.hashPassword(password, account.salt);
         if (hashed !== account.password) {
-            eta.logger.obj(account, username, password);
             this.redirect("/auth/local/login?error=Invalid%20login");
             return;
         }
