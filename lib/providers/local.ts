@@ -22,7 +22,7 @@ export default class LocalProvider extends AuthProvider {
         if (http.req.method !== "GET") return;
         if (http.req.session.lastPage) {
             http.req.session.authFrom = http.req.session.lastPage;
-            await eta.session.save(http.req.session);
+            await eta.session.promise(http.req.session, "save");
         }
         eta.IRequestHandler.redirect(http.res, "/auth/local/login");
     }

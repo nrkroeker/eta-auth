@@ -20,7 +20,7 @@ export default class CasProvider extends AuthProvider {
             return;
         }
         http.req.session["auth.cas.username"] = user.username;
-        await eta.session.save(http.req.session);
+        await eta.session.promise(http.req.session, "save");
         eta.IRequestHandler.redirect(http.res, "/auth/cas/register");
     }
 }
