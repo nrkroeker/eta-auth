@@ -9,7 +9,7 @@ export default class ApiAuthLocalController extends eta.IHttpController {
     @eta.mvc.raw()
     @eta.mvc.post()
     public async login({ username, password }: { username: string, password: string }): Promise<void> {
-        const account: db.LocalAuthAccount = await db.localAuthAccount().createQueryBuilder("account")
+        const account: db.LocalAuthAccount = await this.db.localAuthAccount.createQueryBuilder("account")
             .leftJoinAndSelect("account.user", "user")
             .where("user.username = :username", { username })
             .getOne();
@@ -38,11 +38,11 @@ export default class ApiAuthLocalController extends eta.IHttpController {
     @eta.mvc.raw()
     @eta.mvc.post()
     public async register(params: Partial<db.User> & { password: string }): Promise<void> {
-        const user: db.User = db.user().create(params);
-        await db.user().save(user);
+        const user: db.User = this.db.user.create(params);
+        await this.db.user.save(user);
         const salt: string = eta.crypto.generateSalt();
         const hashed: string = eta.crypto.hashPassword(params.password, salt);
-        await db.localAuthAccount().save(db.localAuthAccount().create({
+        await this.db.localAuthAccount.save(this.db.localAuthAccount.create({
             password: hashed,
             salt,
             user
@@ -54,7 +54,7 @@ export default class ApiAuthLocalController extends eta.IHttpController {
     @eta.mvc.post()
     @eta.mvc.authorize()
     public async changePassword({ oldPassword, newPassword }: { oldPassword: string, newPassword: string }): Promise<void> {
-        const account: db.LocalAuthAccount = await db.localAuthAccount().createQueryBuilder("account")
+        const account: db.LocalAuthAccount = await this.db.localAuthAccount.createQueryBuilder("account")
             .where(`"account"."userId" = :userId`, { userId: this.req.session.userid })
             .getOne();
         if (!account) {
@@ -70,7 +70,7 @@ export default class ApiAuthLocalController extends eta.IHttpController {
         account.shouldForceReset = false;
         account.salt = eta.crypto.generateSalt();
         account.password = eta.crypto.hashPassword(newPassword, account.salt);
-        await db.localAuthAccount().save(account);
+        await this.db.localAuthAccount.save(account);
         this.redirect("/auth/local/login?success=Successfully%20changed%20password.");
     }
 
@@ -82,8 +82,8 @@ export default class ApiAuthLocalController extends eta.IHttpController {
         if (!seeder) return;
         const salt: string = eta.crypto.generateSalt();
         const password: string = eta.crypto.hashPassword("user", salt);
-        await seeder.seed(db.localAuthAccount(), seeder.rows.User.map(user =>
-            db.localAuthAccount().create({ user, salt, password })
+        await seeder.seed(this.db.localAuthAccount, seeder.rows.User.map(user =>
+            this.db.localAuthAccount.create({ user, salt, password })
         ), `"userId"`);
     }
 }

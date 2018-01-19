@@ -4,7 +4,7 @@ import User from "../../cre-db-shared/models/User";
 
 @orm.Entity()
 export default class LocalAuthAccount {
-    @orm.PrimaryColumn()
+    @orm.PrimaryColumn({ type: "int" })
     public userId: number;
 
     @orm.JoinColumn()

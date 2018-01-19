@@ -7,7 +7,7 @@ import { Strategy } from "passport-local";
 export default class LocalProvider extends AuthProvider {
     public buildStrategy(): passport.Strategy {
         return new Strategy((username: string, password: string, done: (err: Error, user?: db.User) => void) => {
-            db.localAuthAccount().createQueryBuilder("account")
+            this.db.localAuthAccount.createQueryBuilder("account")
                 .leftJoinAndSelect("account.user", "user")
                 .where(`"user"."username" = :username`, { username })
                 .getOne()

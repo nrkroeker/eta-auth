@@ -7,9 +7,9 @@ const Strategy = require("passport-cas2").Strategy;
 export default class CasProvider extends AuthProvider {
     public buildStrategy(): passport.Strategy {
         return new Strategy({
-            casURL: eta.config.modules["cre-auth"].providers.cas.url
+            casURL: this.config.get("modules.cre-auth.providers.cas.url")
         }, (username: string, profile: CasProfile, done: (err: Error, user?: db.User) => void) => {
-            db.user().findOne({ username })
+            this.db.user.findOne({ username })
                 .then(user => done(undefined, user || <any>{ username }))
                 .catch(err => done(err));
         });

@@ -6,7 +6,7 @@ import * as db from "../../db";
 export default class AuthCasController extends eta.IHttpController {
     @eta.mvc.get()
     public async register(): Promise<void> {
-        if (eta.config.auth.provider !== "cas") {
+        if (this.config.get("auth.provider") !== "cas") {
             this.res.statusCode = eta.constants.http.AccessDenied;
         }
     }
